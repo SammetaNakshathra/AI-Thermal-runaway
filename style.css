@@ -1,0 +1,199 @@
+/* static/style.css */
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:'Poppins',sans-serif;
+}
+
+body{
+background:url('/static/bg.jpg') no-repeat center center/cover;
+background-attachment:fixed;
+min-height:100vh;
+color:white;
+}
+
+/* Pink matching elegant overlay */
+.overlay{
+min-height:100vh;
+padding:30px;
+background:linear-gradient(
+135deg,
+rgba(25,10,20,0.72),
+rgba(60,18,42,0.68),
+rgba(110,38,72,0.58)
+);
+backdrop-filter:blur(6px);
+}
+
+/* Header */
+header{
+text-align:center;
+margin-bottom:35px;
+}
+
+header h1{
+font-size:44px;
+font-weight:700;
+letter-spacing:1px;
+color:#ffd8ef;
+text-shadow:0 0 18px rgba(255,180,220,0.35);
+margin-bottom:8px;
+}
+
+header p{
+font-size:18px;
+color:#fff0f8;
+}
+
+/* Grid */
+.dashboard{
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
+gap:22px;
+margin-bottom:28px;
+}
+
+/* Glass cards */
+.card{
+background:rgba(255,255,255,0.10);
+border:1px solid rgba(255,255,255,0.15);
+padding:26px;
+border-radius:24px;
+backdrop-filter:blur(16px);
+box-shadow:0 12px 28px rgba(0,0,0,0.28);
+transition:0.35s ease;
+}
+
+.card:hover{
+transform:translateY(-6px);
+}
+
+.card h2{
+font-size:22px;
+margin-bottom:14px;
+color:#ffd8ef;
+font-weight:600;
+}
+
+.card p{
+font-size:34px;
+font-weight:700;
+}
+
+/* =========================
+STATUS COLORS
+========================= */
+
+/* SAFE = GREEN */
+.safe{
+background:linear-gradient(135deg,#00c853,#00e676);
+color:white;
+}
+
+/* MEDIUM = ORANGE */
+.medium{
+background:linear-gradient(135deg,#ff9800,#ffb74d);
+color:white;
+}
+
+/* DANGER = RED */
+.danger{
+background:linear-gradient(135deg,#ff1744,#ff5252);
+color:white;
+animation:pulse 1.5s infinite;
+}
+
+@keyframes pulse{
+0%{transform:scale(1);}
+50%{transform:scale(1.03);}
+100%{transform:scale(1);}
+}
+
+/* Battery bar */
+.battery-bar{
+height:16px;
+background:rgba(255,255,255,0.15);
+border-radius:30px;
+overflow:hidden;
+margin-top:15px;
+}
+
+#battery-fill{
+height:100%;
+width:0%;
+border-radius:30px;
+transition:1s ease;
+}
+
+/* Green high battery */
+.high{
+background:linear-gradient(90deg,#00e676,#00c853);
+}
+
+/* Orange medium battery */
+.mid{
+background:linear-gradient(90deg,#ffb300,#ff9800);
+}
+
+/* Red low battery */
+.low{
+background:linear-gradient(90deg,#ff1744,#ff5252);
+}
+
+/* Graph */
+.graph-container{
+background:rgba(255,255,255,0.10);
+border:1px solid rgba(255,255,255,0.15);
+padding:28px;
+border-radius:24px;
+backdrop-filter:blur(16px);
+margin-bottom:25px;
+}
+
+.graph-container h2{
+margin-bottom:18px;
+color:#ffd8ef;
+}
+
+canvas{
+width:100% !important;
+height:350px !important;
+}
+
+/* Tips */
+.tips ul{
+padding-left:18px;
+line-height:2;
+color:#fff4fa;
+}
+
+/* Footer */
+footer{
+text-align:center;
+padding:20px;
+font-size:15px;
+color:#ffe6f5;
+}
+
+/* Mobile */
+@media(max-width:768px){
+
+header h1{
+font-size:32px;
+}
+
+header p{
+font-size:15px;
+}
+
+.card p{
+font-size:28px;
+}
+
+canvas{
+height:280px !important;
+}
+
+}
