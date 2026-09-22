@@ -1,0 +1,198 @@
+<!-- templates/index.html -->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>EV Smart Dashboard</title>
+
+<link rel="stylesheet" href="/static/style.css">
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+</head>
+<body>
+
+<div class="overlay">
+
+<header>
+<h1>⚡ EV Battery Intelligence Dashboard</h1>
+<p>Smart Monitoring | Fire Detection | Battery AI</p>
+</header>
+
+<div class="dashboard">
+
+<div class="card">
+<h2>🌡 Temperature</h2>
+<p id="temp">0 °C</p>
+</div>
+
+<div class="card">
+<h2>🔋 Voltage</h2>
+<p id="volt">0 V</p>
+</div>
+
+<div class="card">
+<h2>⚡ Current</h2>
+<p id="curr">0 A</p>
+</div>
+
+<div class="card">
+<h2>🔋 Battery</h2>
+<p id="battery">0 %</p>
+
+<div class="battery-bar">
+<div id="battery-fill"></div>
+</div>
+
+</div>
+
+<div class="card">
+<h2>🧠 Battery Life</h2>
+<p id="life">0 %</p>
+</div>
+
+<div class="card alert-card">
+<h2>🚨 Vehicle Status</h2>
+<p id="status">SAFE</p>
+</div>
+
+<div class="card tips">
+<h2>🛡 Safety Tips</h2>
+<ul id="tips">
+<li>Battery operating normally.</li>
+</ul>
+</div>
+
+</div>
+
+
+<div class="graph-container">
+<canvas id="tempChart"></canvas>
+</div>
+
+<div class="graph-container">
+<canvas id="lifeChart"></canvas>
+</div>
+
+</div>
+
+
+<script>
+
+let labels = [];
+let tempData = [];
+let lifeData = [];
+
+const ctx1 = document.getElementById('tempChart').getContext('2d');
+const ctx2 = document.getElementById('lifeChart').getContext('2d');
+
+
+const tempChart = new Chart(ctx1,{
+type:'line',
+data:{
+labels:labels,
+datasets:[{
+label:'Temperature (°C)',
+data:tempData,
+borderWidth:3,
+tension:0.4,
+fill:true
+}]
+},
+options:{
+responsive:true,
+plugins:{legend:{labels:{color:'white'}}},
+scales:{
+x:{ticks:{color:'white'}},
+y:{ticks:{color:'white'}}
+}
+}
+});
+
+
+const lifeChart = new Chart(ctx2,{
+type:'line',
+data:{
+labels:labels,
+datasets:[{
+label:'Battery Life (%)',
+data:lifeData,
+borderWidth:3,
+tension:0.4,
+fill:true
+}]
+},
+options:{
+responsive:true,
+plugins:{legend:{labels:{color:'white'}}},
+scales:{
+x:{ticks:{color:'white'}},
+y:{ticks:{color:'white'}}
+}
+}
+});
+
+
+setInterval(()=>{
+
+fetch('/data')
+.then(res=>res.json())
+.then(data=>{
+
+document.getElementById("temp").innerHTML = data.temp + " °C";
+document.getElementById("volt").innerHTML = data.volt + " V";
+document.getElementById("curr").innerHTML = data.curr + " A";
+document.getElementById("battery").innerHTML = data.battery + " %";
+document.getElementById("life").innerHTML = data.life + " %";
+document.getElementById("status").innerHTML = data.status;
+
+document.getElementById("battery-fill").style.width = data.battery + "%";
+
+labels.push("");
+tempData.push(data.temp);
+lifeData.push(data.life);
+
+if(labels.length > 20){
+labels.shift();
+tempData.shift();
+lifeData.shift();
+}
+
+tempChart.update();
+lifeChart.update();
+
+let tips = document.getElementById("tips");
+
+if(data.temp >= 50){
+tips.innerHTML = `
+<li>🔥 Stop vehicle immediately</li>
+<li>🚨 Fire risk detected</li>
+<li>📞 Call service center</li>
+<li>⚠ Do not charge battery</li>
+`;
+}
+else if(data.temp >= 40){
+tips.innerHTML = `
+<li>⚠ Battery warming</li>
+<li>🚗 Reduce speed</li>
+<li>🧊 Park and cool battery</li>
+`;
+}
+else{
+tips.innerHTML = `
+<li>✅ Safe condition</li>
+<li>🚗 Continue driving</li>
+`;
+}
+
+});
+
+},2000);
+
+</script>
+
+</body>
+</html>
